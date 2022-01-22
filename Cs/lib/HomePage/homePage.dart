@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-    int _selectedIndex = 0;
-    int selectdTopBarIndex = 0;
+  int _selectedIndex = 0;
+  int selectdTopBarIndex = 0;
+  var childern = [
+    Container(
+      child: Image.asset('assets/1.png'),
+    ),
+    Container(
+      child: Image.asset('assets/1.png'),
+    ),
+    Container(
+      child: Image.asset('assets/1.png'),
+    ),
+  ];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return mainBody();
   }
-    appbar() {
+
+  appbar() {
     return AppBar(
-      title: Text('Top Rated',style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),),
+      title: Text(
+        'Top Rated',
+        style: TextStyle(
+            color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+      ),
       backgroundColor: Colors.white,
       elevation: 0,
       iconTheme: IconThemeData(color: Colors.grey),
@@ -35,11 +52,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget tabBar() {
-    return TabBar( 
-      onTap: (value){
-        selectdTopBarIndex = value;
-        setState(() {});
-      },
+    return TabBar(
+        onTap: (value) {
+          selectdTopBarIndex = value;
+          setState(() {});
+        },
         isScrollable: true,
         indicatorColor: Colors.transparent,
         labelStyle: TextStyle(fontSize: 12, color: Colors.white),
@@ -50,7 +67,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> tabbarList(int selectedIndex) {
-    var temp = ["Armchair", "Bed","Lamp"];
+    var temp = ["Armchair", "Bed", "Lamp"];
     List<Widget> tab = [];
     int i = 0;
     for (var tempMenutype in temp) {
@@ -58,19 +75,23 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           padding: EdgeInsets.fromLTRB(21, 14, 21, 14),
           height: 48,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: selectedIndex == i?
-          Color.fromRGBO(25, 27, 36, 1):
-           Color.fromRGBO(248, 248, 248, 1)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: selectedIndex == i
+                  ? Color.fromRGBO(25, 27, 36, 1)
+                  : Color.fromRGBO(248, 248, 248, 1)),
           child: Row(
             children: [
               Icon(Icons.king_bed),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               Text(tempMenutype),
             ],
           ),
         ),
       ));
-    i++;
+      i++;
     }
     return tab;
   }
@@ -87,55 +108,172 @@ class _HomePageState extends State<HomePage> {
           child: Icon(Icons.shopping_bag_outlined),
           backgroundColor: Colors.black,
         ),
-        body: Container(),
+        body: body(),
       ),
     );
   }
+
   bottomNavigationBar() {
     return BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-            backgroundColor: Colors.white,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-      );
-    }
+      type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: '',
+          backgroundColor: Colors.white,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: '',
+          backgroundColor: Colors.white,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: '',
+          backgroundColor: Colors.white,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: '',
+          backgroundColor: Colors.white,
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.grey,
+      onTap: _onItemTapped,
+    );
+  }
 
   Widget cartIcon() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         print("**********************");
         print(MediaQuery.of(context).size.width);
-      print(MediaQuery.of(context).size.height);},
+        print(MediaQuery.of(context).size.height);
+      },
       child: Center(
         child: IconButton(
-              icon: Icon(Icons.tune,color: Colors.black,),
-              onPressed: () {print("**********************");
-        print(MediaQuery.of(context).size.width);
-      print(MediaQuery.of(context).size.height);}),
+            icon: Icon(
+              Icons.tune,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              print("**********************");
+              print(MediaQuery.of(context).size.width);
+              print(MediaQuery.of(context).size.height);
+            }),
       ),
+    );
+  }
+
+  body() {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(top: 45),
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [topRow(), gridview()],
+        ),
+      ),
+    );
+  }
+
+  Widget topRow() {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                "147 products",
+                style: TextStyle(
+                    color: Color.fromRGBO(25, 27, 36, 0.6),
+                    fontWeight: FontWeight.w600),
+              )),
+          Container(
+            padding: EdgeInsets.only(right: 20),
+            child: Row(
+              children: [
+                Text(
+                  "Most popular",
+                  style: TextStyle(
+                      color: Color.fromRGBO(25, 27, 36, 1),
+                      fontWeight: FontWeight.w600),
+                ),
+                Icon(Icons.keyboard_arrow_down_outlined)
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  gridview() {
+    return Container(
+      height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height /2.8),
+      width: MediaQuery.of(context).size.width,
+      child: MasonryGridView.count(physics: AlwaysScrollableScrollPhysics(),
+          // padding: const EdgeInsets.all(12.0),
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+  crossAxisSpacing: 8,
+          itemCount: 4,
+          itemBuilder: (BuildContext context, int index) {
+            return GridTile(
+              child: Container(
+                height: 240,
+                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(23)),
+                color: Color.fromRGBO(248, 248, 248, 1),),
+                margin: index % 2 == 0 ? EdgeInsets.only(top:0,):EdgeInsets.only(top:20,),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 31,right: 30,top: 13),
+                      child: Image.asset('assets/1.png')),
+                    Container(
+                      padding: EdgeInsets.only(left: 16,top: 10),
+                      child: Text("Morabi Chair",
+                      style:TextStyle(color: Color.fromRGBO(25, 27, 36, 0.8)),),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 13,left: 16,right: 16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.attach_money_outlined,color: Color.fromRGBO(224, 188, 29, 1),),
+                              Text("232",
+                              style:TextStyle(color: Color.fromRGBO(25, 27, 36, 1),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.star,color: Color.fromRGBO(224, 188, 29, 1),),
+                              Text("4.8",
+                              style:TextStyle(color: Color.fromRGBO(25, 27, 36, 1),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }
