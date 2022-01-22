@@ -9,6 +9,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int selectdTopBarIndex = 0;
+  Map<String, dynamic> furniture = {};
   var childern = [
     Container(
       child: Image.asset('assets/1.png'),
@@ -24,6 +25,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
   }
 
   @override
@@ -216,54 +223,79 @@ class _HomePageState extends State<HomePage> {
 
   gridview() {
     return Container(
-      height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height /2.8),
+      height: MediaQuery.of(context).size.height -
+          (MediaQuery.of(context).size.height / 2.8),
       width: MediaQuery.of(context).size.width,
-      child: MasonryGridView.count(physics: AlwaysScrollableScrollPhysics(),
+      child: MasonryGridView.count(
+          physics: AlwaysScrollableScrollPhysics(),
           // padding: const EdgeInsets.all(12.0),
           crossAxisCount: 2,
           mainAxisSpacing: 20,
-  crossAxisSpacing: 8,
-          itemCount: 4,
+          crossAxisSpacing: 8,
+          itemCount: furniture.keys.length,
           itemBuilder: (BuildContext context, int index) {
             return GridTile(
               child: Container(
                 height: 240,
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(23)),
-                color: Color.fromRGBO(248, 248, 248, 1),),
-                margin: index % 2 == 0 ? EdgeInsets.only(top:0,):EdgeInsets.only(top:20,),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(23)),
+                  color: Color.fromRGBO(248, 248, 248, 1),
+                ),
+                margin: index % 2 == 0
+                    ? EdgeInsets.only(
+                        top: 0,
+                      )
+                    : EdgeInsets.only(
+                        top: 20,
+                      ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 31,right: 30,top: 13),
-                      child: Image.asset('assets/1.png')),
+                        padding: EdgeInsets.only(left: 31, right: 30, top: 13),
+                        child: Image.asset(furniture[furniture.keys.toList()[index]]["image"])),
                     Container(
-                      padding: EdgeInsets.only(left: 16,top: 10),
-                      child: Text("Morabi Chair",
-                      style:TextStyle(color: Color.fromRGBO(25, 27, 36, 0.8)),),
+                      padding: EdgeInsets.only(left: 16, top: 10),
+                      child: Text(
+                        furniture.keys.toList()[index].toString(),
+                        style:
+                            TextStyle(color: Color.fromRGBO(25, 27, 36, 0.8)),
+                      ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 13,left: 16,right: 16),
+                      padding: EdgeInsets.only(top: 13, left: 16, right: 16),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.attach_money_outlined,color: Color.fromRGBO(224, 188, 29, 1),),
-                              Text("232",
-                              style:TextStyle(color: Color.fromRGBO(25, 27, 36, 1),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),),
+                              Icon(
+                                Icons.attach_money_outlined,
+                                color: Color.fromRGBO(224, 188, 29, 1),
+                              ),
+                              Text(
+                                furniture[furniture.keys.toList()[index]]["price"],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(25, 27, 36, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ],
                           ),
                           Row(
                             children: [
-                              Icon(Icons.star,color: Color.fromRGBO(224, 188, 29, 1),),
-                              Text("4.8",
-                              style:TextStyle(color: Color.fromRGBO(25, 27, 36, 1),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),),
+                              Icon(
+                                Icons.star,
+                                color: Color.fromRGBO(224, 188, 29, 1),
+                              ),
+                              Text(
+                                furniture[furniture.keys.toList()[index]]["rating"],
+                                style: TextStyle(
+                                    color: Color.fromRGBO(25, 27, 36, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ],
                           )
                         ],
@@ -275,5 +307,30 @@ class _HomePageState extends State<HomePage> {
             );
           }),
     );
+  }
+
+  void loadData() {
+    furniture = {
+      "Tortor Chair": {
+        "image": "assets/1.png",
+        "price":"256.00",
+        "rating": "4.5"
+      },
+      "Morbi Chair": {
+        "image": "assets/2.png",
+        "price":"284.00",
+        "rating": "4.8"
+      },
+      "Pretium Chair": {
+        "image": "assets/3.png",
+        "price":"232.00",
+        "rating": "4.3"
+      },
+      "Blandit Chair": {
+        "image": "assets/4.png",
+        "price":"224.00",
+        "rating": "4.1"
+      }
+    };
   }
 }
