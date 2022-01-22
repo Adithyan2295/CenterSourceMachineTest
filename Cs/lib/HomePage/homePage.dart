@@ -1,4 +1,6 @@
+import 'package:centersource/DetailsPage/detailsPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,6 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int selectdTopBarIndex = 0;
+  bool detailsSelected = false;
   Map<String, dynamic> furniture = {};
   var childern = [
     Container(
@@ -104,18 +107,46 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget mainBody() {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: appbar(),
-        bottomNavigationBar: bottomNavigationBar(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.shopping_bag_outlined),
-          backgroundColor: Colors.black,
+    return Stack(
+      children: [
+        DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: detailsSelected ?appbarDetails() : appbar(),
+            bottomNavigationBar: bottomNavigationBar(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.shopping_bag_outlined),
+              backgroundColor: Colors.black,
+            ),
+            body: body(),
+          ),
         ),
-        body: body(),
+        Positioned.fill(
+          top: 90,
+          bottom: 100,
+          child: Visibility(
+            visible: detailsSelected,
+            child: DetailsPage()),
+        ),
+      ],
+    );
+  }
+  appbarDetails() {
+    return AppBar(
+      title: Text(
+        'Point your camera at a furniture',
+        style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+      ),
+      backgroundColor: Colors.black,
+      leading: IconButton(
+        icon: Icon(Icons.camera_alt, color: Colors.white),
+        onPressed: () => null,
+      ),
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+      iconTheme: IconThemeData(
+        color: Colors.red,
       ),
     );
   }
@@ -234,7 +265,12 @@ class _HomePageState extends State<HomePage> {
           crossAxisSpacing: 8,
           itemCount: furniture.keys.length,
           itemBuilder: (BuildContext context, int index) {
-            return GridTile(
+            return GestureDetector(
+              onTap: (){    
+                setState(() {
+                    detailsSelected = true;                 
+                  });
+              },
               child: Container(
                 height: 240,
                 decoration: BoxDecoration(
@@ -253,7 +289,9 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Container(
                         padding: EdgeInsets.only(left: 31, right: 30, top: 13),
-                        child: Image.asset(furniture[furniture.keys.toList()[index]]["image"])),
+                        child: Image.asset(
+                            furniture[furniture.keys.toList()[index]]
+                                ["image"])),
                     Container(
                       padding: EdgeInsets.only(left: 16, top: 10),
                       child: Text(
@@ -275,7 +313,8 @@ class _HomePageState extends State<HomePage> {
                                 color: Color.fromRGBO(224, 188, 29, 1),
                               ),
                               Text(
-                                furniture[furniture.keys.toList()[index]]["price"],
+                                furniture[furniture.keys.toList()[index]]
+                                    ["price"],
                                 style: TextStyle(
                                     color: Color.fromRGBO(25, 27, 36, 1),
                                     fontSize: 15,
@@ -290,7 +329,8 @@ class _HomePageState extends State<HomePage> {
                                 color: Color.fromRGBO(224, 188, 29, 1),
                               ),
                               Text(
-                                furniture[furniture.keys.toList()[index]]["rating"],
+                                furniture[furniture.keys.toList()[index]]
+                                    ["rating"],
                                 style: TextStyle(
                                     color: Color.fromRGBO(25, 27, 36, 1),
                                     fontSize: 15,
@@ -313,24 +353,28 @@ class _HomePageState extends State<HomePage> {
     furniture = {
       "Tortor Chair": {
         "image": "assets/1.png",
-        "price":"256.00",
+        "price": "256.00",
         "rating": "4.5"
       },
       "Morbi Chair": {
         "image": "assets/2.png",
-        "price":"284.00",
+        "price": "284.00",
         "rating": "4.8"
       },
       "Pretium Chair": {
         "image": "assets/3.png",
-        "price":"232.00",
+        "price": "232.00",
         "rating": "4.3"
       },
       "Blandit Chair": {
         "image": "assets/4.png",
-        "price":"224.00",
+        "price": "224.00",
         "rating": "4.1"
       }
     };
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.light));
   }
 }

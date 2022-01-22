@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'DetailsPage/detailsPage.dart';
 import 'HomePage/homePage.dart';
 
 void main() async{
@@ -20,6 +22,7 @@ class MockAPP extends StatelessWidget {
       home: HomePage(),
       routes: {
         '/home': (context) => HomePage(),
+        '/details': (context) => DetailsPage(),
       },
     );
 
