@@ -81,6 +81,7 @@ class HomePageState extends State<HomePage> {
 
   List<Widget> tabbarList(int selectedIndex) {
     var temp = ["Armchair", "Bed", "Lamp"];
+    List <IconData> icons = [Icons.airline_seat_legroom_normal,Icons.king_bed_outlined,Icons.lightbulb];
     List<Widget> tab = [];
     int i = 0;
     for (var tempMenutype in temp) {
@@ -95,7 +96,7 @@ class HomePageState extends State<HomePage> {
                   : Color.fromRGBO(248, 248, 248, 1)),
           child: Row(
             children: [
-              Icon(Icons.king_bed),
+              Icon(icons[i]),
               SizedBox(
                 width: 5,
               ),
@@ -189,9 +190,6 @@ class HomePageState extends State<HomePage> {
   Widget cartIcon() {
     return GestureDetector(
       onTap: () {
-        print("**********************");
-        print(MediaQuery.of(context).size.width);
-        print(MediaQuery.of(context).size.height);
       },
       child: Center(
         child: IconButton(
@@ -200,9 +198,6 @@ class HomePageState extends State<HomePage> {
               color: Colors.black,
             ),
             onPressed: () {
-              print("**********************");
-              print(MediaQuery.of(context).size.width);
-              print(MediaQuery.of(context).size.height);
             }),
       ),
     );
